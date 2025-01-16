@@ -1,3 +1,5 @@
+
+
 public class ArrayOperations {
     public static void printArray(int[] arr) {
         System.out.print("{");
@@ -160,8 +162,9 @@ public class ArrayOperations {
     }
 
     public static int[][] gameOfLife(int[][] matrix) {
-        // Time complexity complexity *_*
+        // Space complexity *_*
         int[] nav = {-1,0,1};
+        int[][] next = new int[matrix.length][matrix[0].length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 int kins = 0;
@@ -173,11 +176,11 @@ public class ArrayOperations {
                         }
                     }
                 }
-                if (kins == 3) {matrix[i][j] = 1;}
-                else if (kins < 2 || kins > 3) {matrix[i][j] = 0;}
+                if (kins == 3) {next[i][j] = 1;}
+                else if (kins < 2 || kins > 3) {next[i][j] = 0;}
             }
         }
-        return matrix;
+        return next;
     }
 
     public static void main(String[] args) {
