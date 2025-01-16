@@ -1,4 +1,4 @@
-
+import java.util.Arrays;
 
 public class ArrayOperations {
     public static void printArray(int[] arr) {
@@ -6,7 +6,7 @@ public class ArrayOperations {
         for (int i=0; i< arr.length; i++) {
             if (i == arr.length-1) {
                 System.out.print(arr[i]);
-            } else {System.out.print(arr[i] + ",");};
+            } else {System.out.print(arr[i] + ",");}
         }
         System.out.print("}\n");
     }
@@ -18,11 +18,11 @@ public class ArrayOperations {
             for (int j = 0; j < arr[0].length; j++) {
                 if (j == arr[0].length-1) {
                     System.out.print(arr[i][j]);
-                } else {System.out.print(arr[i][j] + ",");};
+                } else {System.out.print(arr[i][j] + ",");}
             }
             if (i == arr.length-1) {
                 System.out.print("}");
-            } else {System.out.print("}\n");};
+            } else {System.out.print("}\n");}
         }
         System.out.print("}\n");
     }
@@ -183,6 +183,33 @@ public class ArrayOperations {
         return next;
     }
 
+    // Range Minimum query
+    public static void rangemq(String input) {
+
+        String[] lines = input.split("\n");
+
+        int _ = Integer.parseInt(lines[0]);
+
+        int[] arr = Arrays.stream(lines[1].split("\\s+"))
+                          .mapToInt(Integer::parseInt)
+                          .toArray();
+
+        int q = Integer.parseInt(lines[2]);
+
+        for (int i = 0; i < q; i++) {
+            String[] queryParts = lines[3 + i].split("\\s+");
+            int l = Integer.parseInt(queryParts[0])-1; // l
+            int r = Integer.parseInt(queryParts[1])-1; // r
+            int min = arr[l];
+            for (int j = l+1; j < r-l+1 ; j++) {
+                if (arr[j] < min) {
+                    min = arr[j];
+                }
+            }
+            System.out.println(min);
+        }
+    }
+
     public static void main(String[] args) {
         int[] arr = {1, 3, 4, 6, 31, 2};
         int[] sort = {1, 2, 3};
@@ -208,13 +235,27 @@ public class ArrayOperations {
             {1, 0, 0, 0, 0, 0, 1, 0, 1},
             {0, 0, 1, 0, 0, 0, 0, 0, 1}
         };
+
         System.out.println(FindMax(arr));
+
         System.out.println(isSorted(sort));
         printArray(sortThree);
         threeSort(sortThree);
         printArray(sortThree);
+
         System.out.println(isValidSudoku(board));
+
         System.out.println(maxSubArrSum(findMaxSum));
+
         printMatrix(gameOfLife(matrixOfLife));
+        
+        rangemq("""
+5
+1 3 -2 8 -7
+3
+1 3
+2 4
+1 5
+""");
     }
 }
