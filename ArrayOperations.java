@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
 public class ArrayOperations {
+    // Print 1D-Array
     public static void printArray(int[] arr) {
         System.out.print("{");
         for (int i=0; i< arr.length; i++) {
@@ -11,6 +12,7 @@ public class ArrayOperations {
         System.out.print("}\n");
     }
 
+    // Print 2D-Array or Matrix
     public static void printMatrix(int[][] arr) {
         System.out.print("{");
         for (int i=0; i< arr.length; i++) {
@@ -27,6 +29,7 @@ public class ArrayOperations {
         System.out.print("}\n");
     }
     
+    // Maximum in an Array
     public static int FindMax(int[] arr) {
         int i = arr[0];
         for (int n = 0; n < arr.length; n++) {
@@ -34,10 +37,10 @@ public class ArrayOperations {
                 i = arr[n];
             }
         }
-
         return i;
     }
 
+    // Is the Array sorted?
     public static boolean isSorted(int[] arr) {
         for (int i = 0; i < arr.length-1; i++) {
             if (arr[i+1] < arr[i]) {
@@ -47,6 +50,7 @@ public class ArrayOperations {
         return true;
     }
 
+    // Sort an Array with atmost Three Values Without Using Sorting
     public static void threeSort(int[] arr) {
         int countA = 0, countB = 0, countC = 0;
         int a = -1, ai = 0, b = -1, bi = 0, c = -1, ci = 0;
@@ -104,7 +108,7 @@ public class ArrayOperations {
     // Prime factor sudoku validation
     public static boolean isValidSudoku(int[][] board) {
         int[] prime = {1, 2, 3, 5, 7, 11, 13, 17, 19, 23};
-        //row check
+        // Row Check
         for (int i = 0; i < board.length; i++) {
             int factor = 1;
             for (int j = 0; j < board.length; j++) {
@@ -116,7 +120,7 @@ public class ArrayOperations {
             }
         }
 
-        //column check
+        // Column Check
         for (int i = 0; i < board.length; i++) {
             int factor = 1;
             for (int j = 0; j < board.length; j++) {
@@ -128,7 +132,7 @@ public class ArrayOperations {
             }
         }
 
-        //block check
+        // Block Check
         for (int pad = 0; pad < 7; pad += 3){
             int factor = 1;
             for (int i = 0 + pad; i < 3 + pad; i++) {
@@ -162,7 +166,7 @@ public class ArrayOperations {
     }
 
     public static int[][] gameOfLife(int[][] matrix) {
-        // Space complexity *_*
+        // Space complexity *_* where?
         int[] nav = {-1,0,1};
         int[][] next = new int[matrix.length][matrix[0].length];
         for (int i = 0; i < matrix.length; i++) {
@@ -208,6 +212,31 @@ public class ArrayOperations {
             }
             System.out.println(min);
         }
+    }
+
+    // Tuples with Constraints on Three Sorted Arrays
+    public static int threeArrays(int[] A, int[] B, int[] C, int D) {
+        int tuples = 0;
+        int i = 0, j = 0, k = 0;
+
+        while (i != A.length-1 || j != A.length-1 || k != A.length-1) {
+            if (A[i] - B[j] <= D || B[j] - A[i] <= D) {
+                if ((B[j] - C[k] <= D || C[k] - B[j] <= D) && i != A.length-1) {
+                    tuples += 1;
+                    if (i != A.length-1) {i++;}
+                } else if (B[j] >= C[k]){
+                    if (k != A.length-1) {k++;}
+                } else if (C[k] > B[j]) {
+                    j++;
+                }
+            } else if (A[i] >= B[j]){
+                if (j != A.length-1) {j++;}
+            } else if (B[j] > A[i]) {
+                if (i != A.length-1) {i++;}
+            }
+        }
+
+        return tuples;
     }
 
     public static void main(String[] args) {
@@ -257,5 +286,9 @@ public class ArrayOperations {
 2 4
 1 5
 """);
+        int[] A = {1, 2, 3};
+        int[] B = {1, 2, 4};
+        int[] C = {2, 2, 5};
+        System.out.println(threeArrays(A, B, C, 1));
     }
 }
