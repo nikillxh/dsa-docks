@@ -187,7 +187,25 @@ public class ArrayOperations {
         return next;
     }
 
+    // Rotate Array by k-steps
+    public static void rotateArray(int[] nums, int k) {
+        k = nums.length - k;
+        int wrap = k % nums.length, i;
+        for (i = 0; wrap + i < nums.length; i++) {
+            nums[i] -= nums[wrap + i];
+            nums[wrap + i] += nums[i];
+            nums[i] = nums[wrap + i] - nums[i];
+        }
+
+        for (i = i; i < nums.length-1; i++) {
+            nums[i] -= nums[i+1];
+            nums[i+1] += nums[i];
+            nums[i] = nums[i+1] - nums[i]; 
+        }
+    }
+
     // Range Minimum query
+    // Time Complexity *_*
     public static void rangemq(String input) {
 
         String[] lines = input.split("\n");
@@ -215,6 +233,7 @@ public class ArrayOperations {
     }
 
     // Tuples with Constraints on Three Sorted Arrays
+    // Broken Vessel
     public static int threeArrays(int[] A, int[] B, int[] C, int D) {
         int tuples = 0;
         int i = 0, j = 0, k = 0;
@@ -265,6 +284,8 @@ public class ArrayOperations {
             {0, 0, 1, 0, 0, 0, 0, 0, 1}
         };
 
+        int[] nums = {1, 2, 3, 4, 5, 6, 7};
+
         System.out.println(FindMax(arr));
 
         System.out.println(isSorted(sort));
@@ -290,5 +311,8 @@ public class ArrayOperations {
         int[] B = {1, 2, 4};
         int[] C = {2, 2, 5};
         System.out.println(threeArrays(A, B, C, 1));
+        
+        rotateArray(nums, 3);
+        printArray(nums);
     }
 }
