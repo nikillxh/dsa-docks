@@ -258,10 +258,47 @@ public class ArrayOperations {
         return tuples;
     }
 
+    // Reaching the Bottom-Right Cell
+    // U: -1, D: 1, R: 2, L: -2, END: 7, Non-Virgin: 0
+    public static boolean bottomRight(int[][] grid) {
+        int flag = 1, i = 0, j = 0, k;
+        while (flag == 1) {
+            if (grid[i][j] == 7) {return true;}
+            if (grid[i][j] == 0) {
+                System.out.println(grid[i][j]);
+                System.out.println(i);
+                System.out.println(j);
+                return false;}
+            if (grid[i][j] == -1 || grid[i][j] == 1) {
+                if ((i + grid[i][j] < grid.length) && (i + grid[i][j] >= 0)) {
+                    k = grid[i][j];
+                    grid[i][j] = 0;
+                    i += k;
+                } else {
+                    return false;}
+            } else if (grid[i][j] == -2 || grid[i][j] == 2) {
+                if ((j + (grid[i][j] / 2) < grid.length) && (j + (grid[i][j] / 2) >= 0)) {
+                    k = grid[i][j] / 2;
+                    grid[i][j] = 0;
+                    j += k;
+                } else {return false;}
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         int[] arr = {1, 3, 4, 6, 31, 2};
+        System.out.println(FindMax(arr));
+
         int[] sort = {1, 2, 3};
+        System.out.println(isSorted(sort));
+
         int[] sortThree = {2, 1, 3, 2, 1, 3, 2};
+        printArray(sortThree);
+        threeSort(sortThree);
+        printArray(sortThree);
+
         int[][] board = {{7, 0, 0, 0, 0, 0, 2, 0, 0},   
             {4, 0, 5, 0, 0, 0, 0, 0, 3},   
             {0, 4, 0, 2, 0, 1, 0, 0, 0},   
@@ -272,7 +309,11 @@ public class ArrayOperations {
             {5, 0, 0, 0, 0, 0, 1, 0, 6},   
             {0, 0, 6, 0, 0, 0, 0, 0, 8}   
         };  
+        System.out.println(isValidSudoku(board));
+
         int[] findMaxSum = {2, -1, 3, 4, -6, 7, -9, 8};
+        System.out.println(maxSubArrSum(findMaxSum));
+
         int[][] matrixOfLife = {{1, 0, 0, 0, 0, 0, 1, 0, 0},
             {1, 0, 1, 0, 0, 0, 0, 0, 1},
             {0, 1, 0, 1, 0, 1, 0, 0, 0},
@@ -283,22 +324,8 @@ public class ArrayOperations {
             {1, 0, 0, 0, 0, 0, 1, 0, 1},
             {0, 0, 1, 0, 0, 0, 0, 0, 1}
         };
-
-        int[] nums = {1, 2, 3, 4, 5, 6, 7};
-
-        System.out.println(FindMax(arr));
-
-        System.out.println(isSorted(sort));
-        printArray(sortThree);
-        threeSort(sortThree);
-        printArray(sortThree);
-
-        System.out.println(isValidSudoku(board));
-
-        System.out.println(maxSubArrSum(findMaxSum));
-
         printMatrix(gameOfLife(matrixOfLife));
-        
+  
         rangemq("""
 5
 1 3 -2 8 -7
@@ -307,12 +334,25 @@ public class ArrayOperations {
 2 4
 1 5
 """);
+
         int[] A = {1, 2, 3};
         int[] B = {1, 2, 4};
         int[] C = {2, 2, 5};
         System.out.println(threeArrays(A, B, C, 1));
-        
+
+        int[] nums = {1, 2, 3, 4, 5, 6, 7};
         rotateArray(nums, 3);
         printArray(nums);
+
+        // U: -1, D: 1, R: 2, L: -2, END: 7, Non-Virgin: 0
+        int[][] grid = {{2, 1, 2, 1, 2, 1, 1},
+            {1, 1, 1, 1, 1, 2, 1},
+            {1, 1, 1, 2, 2, 1, 1},
+            {1, 2, 2, 1, 2, 1, 1},
+            {2, 2, 2, 1, 2, 1, 1},
+            {1, 1, 2, 2, 2, 2, 1},
+            {2, 2, 2, 2, 2, 2, 7},
+        };
+        System.out.println(bottomRight(grid));
     }
 }

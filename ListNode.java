@@ -44,6 +44,39 @@ public class ListNode {
         return list;
     }
 
+    // Find Middle List Node
+    public static ListNode middleNode(ListNode list) {
+        ListNode cross = list;
+        ListNode double_cross = list;
+
+        while (1 > 0) {
+            if (double_cross.next == null) {return cross;}
+            else if (double_cross.next.next == null) {return cross.next;}
+            else {double_cross = double_cross.next.next;}
+
+            if (cross.next == null) {return cross;}
+            else {cross = cross.next;}
+        }
+    }
+
+    // Detecting Linked List Cycle
+    public static boolean detectCycle(ListNode list) {
+        ListNode cross = list;
+        ListNode double_cross = list;
+
+        while (1 > 0) {
+            if (double_cross.next == null) {return false;}
+            else if (double_cross.next == cross) {return true;}
+            else if (double_cross.next.next == null) {return false;}
+            else if (double_cross.next.next == cross) {return true;}
+            else {double_cross = double_cross.next.next;}
+
+            if (cross.next == null) {return false;}
+            else if (cross.next == double_cross) {return true;}
+            else {cross = cross.next;}
+        }
+    }
+
     // Merge K sorted -> K/2 Linked Lists
     public static ListNode MergeKSort(ListNode[] nodeArray) {
         while(nodeArray.length > 1) {
@@ -116,7 +149,17 @@ public class ListNode {
         ListNode al = arrayToListNode(a), bl = arrayToListNode(b), cl = arrayToListNode(c);
         ListNode[] toSort = {al, bl, cl};
         ListNode sorted = MergeKSort(toSort);
-        
         printList(sorted);
+
+        int[] middleArr = {1, 3, 4, 6, 2};
+        ListNode findMiddle = arrayToListNode(middleArr);
+        printList(middleNode(findMiddle));
+
+        int[] d = {1, 2, 5, 12, 34, 12, 4};
+        ListNode dl = arrayToListNode(d);
+        dl.next.next.next.next.next.next.next = dl.next.next.next.next.next;
+        System.out.println(detectCycle(dl));
+
+
     }
 }
