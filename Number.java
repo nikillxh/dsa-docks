@@ -77,6 +77,21 @@ public class Number {
         return integer;
     }
 
+    public static String outputAsString(Number num) {
+        Digits list = num.num;
+        String integer = "";
+        int length = 0;
+
+        while (list.next != null && length < 10) {
+            integer = list.value + integer;
+            length += 1;
+            list = list.next;
+        }
+        if (length < 10) {integer = list.value + integer;}
+
+        return integer;
+    }
+
     // Addition. F in the terminal
     public static Number addition(Number x, Number y) {
         Number sum = new Number();
@@ -196,7 +211,8 @@ public class Number {
         System.out.println(compareNumber(x, y));
         printNumber(addition(x, y));
 
-        Number asInt = convertToL(23342);
-        System.out.println(outputAsInteger(asInt));
+        Number asType = convertToL(23342);
+        System.out.println(outputAsInteger(asType));
+        System.out.println(outputAsString(asType));
     }
 }
