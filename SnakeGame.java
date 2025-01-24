@@ -59,21 +59,32 @@ public class SnakeGame {
         }
 
         private void stateSnake() {
-            if (snake.posX == apple[0] && snake.posY == apple[1]) {
-                if (snake.length == 0) {
-                    Body new_part = new Body(snake.dir);
-                    new_part.posX = snake.posX; new_part.posY = snake.posY;
-                    snake.body = new_part;
-                    snake.length += 1;
+            if (snake.posX == apple[0]-1 && snake.posY == apple[1]-1) {
+                for(int j = 0; j < snake.length + 1; j++) {
+                    if (snake.length == 0) {
+                        Body new_part = new Body(snake.dir);
+                        new_part.posX = snake.posX; new_part.posY = snake.posY;
+                        snake.body = new_part;
+                        snake.length += 1;   
+                        break;
+                    } else {
+                        Body pointer = snake.body;
+                        for (int i = 1; i < snake.length; i++) {pointer = pointer.meat;}
+                        Body new_part = new Body(pointer.chunkDir);
+                        new_part.posX = pointer.posX; new_part.posY = pointer.posY;
+                        pointer.meat = new_part;
+                        snake.length += 1;
+                        System.out.println(snake.length);
+                        break;
+                    }
                 }
-                else {
-                    Body pointer = snake.body;
-                    for (int i = 1; i < snake.length; i++) {pointer = snake.body;}
-                    Body new_part = new Body(pointer.chunkDir);
-                    new_part.posX = pointer.posX; new_part.posY = pointer.posY;
-                    pointer.meat = new_part;
-                    snake.length += 1;
-                }
+            }
+            int prevPosX = snake.posX; int prevPosY = snake.posY;
+            Body pointer = snake.body;
+            for(int j = 1; j < snake.length + 1; j++) {
+                pointer.meat.posX = pointer.posX; pointer.meat.posY = pointer.posY;
+                pointer.posX = prevPosX; pointer.posY = prevPosY;
+                pointer = pointer.meat;
             }
         }
     }
@@ -120,14 +131,14 @@ public class SnakeGame {
         if (newDirection == 'l') {snake.dir = 'l';}
         else if (newDirection == 'k') {snake.dir = 'k';}
         else if (newDirection == 'h') {snake.dir = 'h';}
-        else if (newDirection == 'j') {snake.dir = 'k';}
+        else if (newDirection == 'j') {snake.dir = 'j';}
     }
 
     public boolean moveSnake() {
-        if (snake.dir == 'h') {snake.posX -= 1;}
-        else if (snake.dir == 'j') {snake.posY -= 1;}
-        else if (snake.dir == 'k') {snake.posY += 1;}
-        else if (snake.dir == 'l') {snake.posX += 1;}
+        if (snake.dir == 'h') {snake.posY -= 1;}
+        else if (snake.dir == 'j') {snake.posX -= 1;}
+        else if (snake.dir == 'k') {snake.posX += 1;}
+        else if (snake.dir == 'l') {snake.posY += 1;}
         return true;
     }
 
@@ -155,7 +166,8 @@ public class SnakeGame {
             else {grid[snakeIndex[i][0]][snakeIndex[i][1]] = 'O';}
         }
 
-        grid[apple[0] -1][apple[1] - 1] = 'A';
+        if (snake.posX == apple[0]-1 && snake.posY == apple[1]-1) {grid[apple[0] -1][apple[1] - 1] = face;}
+        else grid[apple[0] -1][apple[1] - 1] = 'A';
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -188,7 +200,11 @@ public class SnakeGame {
                 System.out.println("Illegal move");
                 gameState = false;
             }
+
             game.printState();
+
+            game.snake.stateSnake();
+            if (game.snake.posX == game.apple[0]-1 && game.snake.posY == game.apple[1]-1) {game.generateApple();}
         }
     } 
 }
