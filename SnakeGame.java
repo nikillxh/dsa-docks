@@ -32,11 +32,6 @@ public class SnakeGame {
             Body(char cDir) {
                 chunkDir = cDir;
                 meat = null;
-
-                if (chunkDir == 'h') {posX -= 1;}
-                else if (chunkDir == 'j') {posY -= 1;}
-                else if (chunkDir == 'k') {posY += 1;}
-                else if (chunkDir == 'l') {posX += 1;}
             }
         }
 
@@ -60,28 +55,28 @@ public class SnakeGame {
 
         private void stateSnake() {
             if (snake.posX == apple[0]-1 && snake.posY == apple[1]-1) {
-                for(int j = 0; j < snake.length + 1; j++) {
-                    if (snake.length == 0) {
-                        Body new_part = new Body(snake.dir);
-                        new_part.posX = snake.posX; new_part.posY = snake.posY;
-                        snake.body = new_part;
-                        snake.length += 1;   
-                        break;
-                    } else {
-                        Body pointer = snake.body;
-                        for (int i = 1; i < snake.length; i++) {pointer = pointer.meat;}
-                        Body new_part = new Body(pointer.chunkDir);
-                        new_part.posX = pointer.posX; new_part.posY = pointer.posY;
-                        pointer.meat = new_part;
-                        snake.length += 1;
-                        System.out.println(snake.length);
-                        break;
-                    }
+                if (snake.length == 0) {
+                    Body new_part = new Body(snake.dir);
+                    new_part.posX = snake.posX; new_part.posY = snake.posY;
+                    snake.body = new_part;
+                    snake.length += 1;   
+                } else {
+                    Body pointer = snake.body;
+                    for (int i = 1; i < snake.length; i++) {pointer = pointer.meat;}
+                    Body new_part = new Body(pointer.chunkDir);
+                    new_part.posX = pointer.posX; new_part.posY = pointer.posY;
+                    pointer.meat = new_part;
+                    snake.length += 1;
+                    System.out.println(snake.length);
                 }
             }
             int prevPosX = snake.posX; int prevPosY = snake.posY;
             Body pointer = snake.body;
-            for(int j = 1; j < snake.length + 1; j++) {
+            if (snake.length >= 1) {
+                pointer.posX = prevPosX; pointer.posY = prevPosY;
+            }
+            for(int j = 1; j < snake.length; j++) {
+                prevPosX = pointer.meat.posX; prevPosY = pointer.meat.posY;
                 pointer.meat.posX = pointer.posX; pointer.meat.posY = pointer.posY;
                 pointer.posX = prevPosX; pointer.posY = prevPosY;
                 pointer = pointer.meat;

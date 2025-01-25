@@ -1,3 +1,5 @@
+
+
 public class Number {
     int sign;
     Digits num;
@@ -92,122 +94,207 @@ public class Number {
         return integer;
     }
 
-    // Addition. F in the terminal
+    // Addition
     public static Number addition(Number x, Number y) {
         Number sum = new Number();
         sum.num = new Digits(0);
-        Digits pointer_sum = sum.num, pointer_x = x.num, pointer_y = y.num;
+        Digits x_pointer = x.num, y_pointer = y.num, pointer_sum = sum.num;
         int carry = 0;
 
-        while (pointer_x.next != null || pointer_y.next != null) {
-            pointer_sum.value = (pointer_x.value * x.sign) + (pointer_y.value * y.sign) + carry;
-            if (pointer_sum.value > 9) {
-                pointer_sum.value -= 10;
-                carry += 1;
-            } else if (pointer_sum.value < 0) {
-                pointer_sum.value += 10;
-                carry -= 1;
-            } else {
-                carry = 0;
+        // Same sign
+        if (x.sign * y.sign == 1) {
+            while (x_pointer.next != null && y_pointer.next != null) { 
+                pointer_sum.value = x_pointer.value + y_pointer.value + carry;
+                if (pointer_sum.value > 10) {
+                    carry = 1;
+                    pointer_sum.value = pointer_sum.value % 10;}
+                else {carry = 0;}
+                if (x_pointer.next != null && y_pointer.next != null) {
+                    x_pointer = x_pointer.next; y_pointer = y_pointer.next;}
+                if (x_pointer.next == null && y_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;
+                    pointer_sum.value = x_pointer.value + y_pointer.value + carry;
+                    if (pointer_sum.value > 10) {
+                        carry = 1;
+                        pointer_sum.value = pointer_sum.value % 10;}
+                    else {carry = 0;}
+                } else if (x_pointer.next != null && y_pointer.next != null) {
+                    pointer_sum.next = new Digits(0);
+                    pointer_sum = pointer_sum.next;
+                }
             }
-
-            if (pointer_x.next != null && pointer_y.next != null) {
-                pointer_sum.next = new Digits(0);
-                pointer_sum = pointer_sum.next;
+            if (x_pointer.next == null && y_pointer.next != null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;
+                pointer_sum.value = x_pointer.value + y_pointer.value + carry;
+                if (pointer_sum.value > 10) {
+                    carry = 1;
+                    pointer_sum.value = pointer_sum.value % 10;}
+                else {carry = 0;}
+                if (y_pointer.next != null) {y_pointer = y_pointer.next;}
+                if (y_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = y_pointer.value + carry;
+                    if (pointer_sum.value > 10) {
+                        carry = 1;
+                        pointer_sum.value = pointer_sum.value % 10;}
+                    else {carry = 0;}
+                }
             }
-
-            if (pointer_x.next == null || pointer_y.next == null) {break;}
-            else {pointer_x = pointer_x.next;}
-            if (pointer_y.next == null) {break;}
-            else {pointer_y = pointer_y.next;}
-
+            if (x_pointer.next != null && y_pointer.next == null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;
+                pointer_sum.value = x_pointer.value + y_pointer.value + carry;
+                if (pointer_sum.value > 10) {
+                    carry = 1;
+                    pointer_sum.value = pointer_sum.value % 10;}
+                else {carry = 0;}
+                if (x_pointer.next != null) {x_pointer = x_pointer.next;}
+                if (x_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = x_pointer.value + carry;
+                    if (pointer_sum.value > 10) {
+                        carry = 1;
+                        pointer_sum.value = pointer_sum.value % 10;}
+                    else {carry = 0;}
+                }
+            }
+            while (x_pointer.next == null && y_pointer.next != null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                pointer_sum.value = y_pointer.value + carry;
+                if (pointer_sum.value > 10) {
+                    carry = 1;
+                    pointer_sum.value = pointer_sum.value % 10;}
+                else {carry = 0;}
+                if (y_pointer.next != null) {y_pointer = y_pointer.next;}
+                if (y_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = y_pointer.value + carry;
+                    if (pointer_sum.value > 10) {
+                        carry = 1;
+                        pointer_sum.value = pointer_sum.value % 10;}
+                    else {carry = 0;}
+                }
+            }
+            while (x_pointer.next != null && y_pointer.next == null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                pointer_sum.value = x_pointer.value + carry;
+                if (pointer_sum.value > 10) {
+                    carry = 1;
+                    pointer_sum.value = pointer_sum.value % 10;}
+                else {carry = 0;}
+                if (x_pointer.next != null) {x_pointer = x_pointer.next;}
+                if (x_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = x_pointer.value + carry;
+                    if (pointer_sum.value > 10) {
+                        carry = 1;
+                        pointer_sum.value = pointer_sum.value % 10;}
+                    else {carry = 0;}
+                }
+            }
+            if (carry != 0) {pointer_sum.next = new Digits(carry);}
+            sum.sign = x.sign;
         }
 
-        if (pointer_x.next == null && pointer_y.next == null) {
-            // pointer_sum.next = new Digits(0);
-            // pointer_sum = pointer_sum.next;
-            pointer_sum.value = (pointer_x.value * x.sign) + (pointer_y.value * y.sign) + carry;
-            if (pointer_sum.value > 9) {
-                pointer_sum.value -= 10;
-                carry += 1;
-            } else if (pointer_sum.value < 0) {
-                pointer_sum.value += 10;
-                carry -= 1;
-            } else {
-                carry = 0;
+        // Different sign (Y - positive, X - negative)
+        else if (x.sign * y.sign == -1) {
+            while (x_pointer.next != null && y_pointer.next != null) { 
+                pointer_sum.value = (x_pointer.value * x.sign) + (y_pointer.value * y.sign) + carry;
+                if (pointer_sum.value < 0) {
+                    carry = -1;
+                    pointer_sum.value = pointer_sum.value + 10;}
+                else {carry = 0;}
+                if (x_pointer.next != null && y_pointer.next != null) {
+                    x_pointer = x_pointer.next; y_pointer = y_pointer.next;}
+                if (x_pointer.next == null && y_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;
+                    pointer_sum.value = (x_pointer.value * x.sign) + (y_pointer.value * y.sign) + carry;
+                    if (pointer_sum.value < 0) {
+                        carry = -1;
+                        pointer_sum.value = pointer_sum.value + 10;}
+                    else {carry = 0;}
+                } else if (x_pointer.next != null && y_pointer.next != null) {
+                    pointer_sum.next = new Digits(0);
+                    pointer_sum = pointer_sum.next;
+                }
             }
-        }
-
-        while (pointer_x.next != null) {
-            pointer_sum.next = new Digits(0);
-            pointer_sum = pointer_sum.next;
-            pointer_x = pointer_x.next;
-
-            pointer_sum.value = pointer_x.value * x.sign + carry;
-            if (pointer_sum.value > 9) {
-                pointer_sum.value -= 10;
-                carry += 1;
-            } else if (pointer_sum.value < 0) {
-                pointer_sum.value += 10;
-                carry -= 1;
-            } else {
-                carry = 0;
+            if (x_pointer.next == null && y_pointer.next != null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;
+                pointer_sum.value = (x_pointer.value * x.sign) + (y_pointer.value * y.sign) + carry;
+                if (pointer_sum.value < 0) {
+                    carry = -1;
+                    pointer_sum.value = pointer_sum.value + 10;}
+                else {carry = 0;}
+                if (y_pointer.next != null) {y_pointer = y_pointer.next;}
+                if (y_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = (y_pointer.value * y.sign) + carry;
+                    if (pointer_sum.value < 0) {
+                        carry = -1;
+                        pointer_sum.value = pointer_sum.value + 10;}
+                    else {carry = 0;}
+                }
             }
-            if (pointer_x.next == null) {break;}
-            else {
-                pointer_x = pointer_x.next;
-                if (pointer_x.next == null) {
-                pointer_sum.next = new Digits(0);
-                pointer_sum = pointer_sum.next;
-                pointer_sum.value = pointer_x.value * x.sign + carry;
-                } 
+            if (x_pointer.next != null && y_pointer.next == null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;
+                pointer_sum.value = (x_pointer.value * x.sign) + (y_pointer.value * y.sign) + carry;
+                if (pointer_sum.value < 0) {
+                    carry = -1;
+                    pointer_sum.value = pointer_sum.value + 10;}
+                else {carry = 0;}
+                if (x_pointer.next != null) {x_pointer = x_pointer.next;}
+                if (x_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = (x_pointer.value * x.sign) + carry;
+                    if (pointer_sum.value < 0) {
+                        carry = -1;
+                        pointer_sum.value = pointer_sum.value + 10;}
+                    else {carry = 0;}
+                }
             }
-        }
-
-        while (pointer_y.next != null) {
-            pointer_sum.next = new Digits(0);
-            pointer_sum = pointer_sum.next;
-            pointer_y = pointer_y.next;
-
-            pointer_sum.value = pointer_y.value * y.sign + carry;
-            if (pointer_sum.value > 9) {
-                pointer_sum.value -= 10;
-                carry += 1;
-            } else if (pointer_sum.value < 0) {
-                pointer_sum.value += 10;
-                carry -= 1;
-            } else {
-                carry = 0;
+            while (x_pointer.next == null && y_pointer.next != null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                pointer_sum.value = (y_pointer.value * y.sign) + carry;
+                if (pointer_sum.value < 0) {
+                    carry = -1;
+                    pointer_sum.value = pointer_sum.value + 10;}
+                else {carry = 0;}
+                if (y_pointer.next != null) {y_pointer = y_pointer.next;}
+                if (y_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = (y_pointer.value * y.sign) + carry;
+                    if (pointer_sum.value < 0) {
+                        carry = -1;
+                        pointer_sum.value = pointer_sum.value + 10;}
+                    else {carry = 0;}
+                }
             }
-            if (pointer_y.next == null) {break;}
-            else {
-                pointer_y = pointer_y.next;
-                if (pointer_y.next == null) {
-                pointer_sum.next = new Digits(0);
-                pointer_sum = pointer_sum.next;
-                pointer_sum.value = pointer_y.value * y.sign + carry;
-                } 
+            while (x_pointer.next != null && y_pointer.next == null) {
+                pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                pointer_sum.value = (x_pointer.value * x.sign) + carry;
+                if (pointer_sum.value < 0) {
+                    carry = -1;
+                    pointer_sum.value = pointer_sum.value + 10;}
+                else {carry = 0;}
+                if (x_pointer.next != null) {x_pointer = x_pointer.next;}
+                if (x_pointer.next == null) {
+                    pointer_sum.next = new Digits(0); pointer_sum = pointer_sum.next;                
+                    pointer_sum.value = (x_pointer.value * x.sign) + carry;
+                    if (pointer_sum.value < 0) {
+                        carry = -1;
+                        pointer_sum.value = pointer_sum.value + 10;}
+                    else {carry = 0;}
+                }
             }
-        }
-
-        if (pointer_sum.value < 0) {
-            pointer_sum.value *= -1;
-            sum.sign = -1;
-        } else if (pointer_sum.value > 0) {
-            sum.sign = 1;
-        } else {sum.sign = 1;}
-
-        if (carry != 0) {pointer_sum.next = new Digits(1);}
-        if(pointer_sum.value == 0) {
-            pointer_sum = null;
+            if (carry != 0) {pointer_sum.value += carry;}
+            sum.sign = x.sign;
         }
 
         return sum;
     }
 
     public static void main(String[] args) {
-        Number x = convertToL(2323);
-        Number y = convertToL(-3134);
+        Number x = convertToL(9332);
+        Number y = convertToL(3423);
         System.out.println(compareNumber(x, y));
         printNumber(addition(x, y));
 
