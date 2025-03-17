@@ -70,6 +70,15 @@ public class StackOp{
         }
     }
 
+    public static String ff() {
+        String str = "";
+        Stack count = new Stack<Integer>();
+        Stack string = new Stack<Integer>();
+        int current = 0;
+
+        return str;
+    }
+
     public static void main(String[] args) {
         MyQueue queue1 = new MyQueue();
         queue1.enqueue(3);
