@@ -70,13 +70,32 @@ public class StackOp{
         }
     }
 
-    public static String ff() {
-        String str = "";
+    public static String decode(String encoded) {
         Stack count = new Stack<Integer>();
         Stack string = new Stack<Integer>();
-        int current = 0;
-
-        return str;
+        for (int i = 0; i < encoded.length(); i++) {
+            if (Character.isDigit(encoded.charAt(i))) {
+                count.push(Character.getNumericValue(encoded.charAt(i)));
+            } else if (encoded.charAt(i) == '[') {
+                string.push("");
+            } else if (encoded.charAt(i) == ']') {
+                String str1 = (String) string.pop();
+                String str2 = "";
+                if (!string.isEmpty()) {str2 = (String) string.pop();}
+                int curr_count = (int) count.pop();
+                System.out.println(curr_count);
+                String goStr = str1.repeat(curr_count);
+                System.out.println(goStr);
+                goStr = str2 + goStr;
+                string.push(goStr);
+            } else {
+                String str = "";
+                if (!string.isEmpty()) {str = (String) string.pop();}
+                str += encoded.charAt(i);
+                string.push(str);
+            }
+        }
+        return (String) string.pop();
     }
 
     public static void main(String[] args) {
@@ -86,5 +105,8 @@ public class StackOp{
         System.out.println(queue1.front());
         queue1.dequeue();
         System.out.println(queue1.front());
+
+        String str = new String("3[a2[c]]");
+        System.out.println(decode(str));
     }
 }
